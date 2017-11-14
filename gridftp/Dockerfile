@@ -8,7 +8,7 @@ ADD "http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustan
 RUN yum install -y lcg-CA
 
 # Server software
-RUN yum install -y edg-mkgridmap globus-gridftp-server globus-gridftp-server-progs
+RUN yum install -y openssl edg-mkgridmap globus-gridftp-server globus-gridftp-server-progs
 RUN yum install -y supervisor cronie
 
 # GridFTP ports
