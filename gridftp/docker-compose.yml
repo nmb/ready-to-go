@@ -4,6 +4,9 @@ services:
     gridftp-server:
         build:
           context: .
+          args:
+            - LOCALGRIDMAP
+            - CONTAINERUSERS
         network_mode: "host"
         ports:
             - "0.0.0.0:80:80"
@@ -14,9 +17,6 @@ services:
             - EMAIL
             - DOMAIN
         volumes:
-            - /etc/passwd:/etc/passwd
-            - /etc/group:/etc/group
             - ./config/edg-mkgridmap.conf:/etc/edg-mkgridmap.conf
-            - ./config/localgridmap.conf:/etc/localgridmap.conf
             - ./config/gridftp.conf:/etc/gridftp.conf
             - /srv:/srv

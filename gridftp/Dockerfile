@@ -17,6 +17,14 @@ EXPOSE 2811 50000-50200
 # Grid mapfile
 ADD "image/edg-mkgridmap.cron" "/etc/cron.d"
 
+# Optional explicit user mapping
+ARG LOCALGRIDMAP
+RUN echo $LOCALGRIDMAP >> /etc/localgridmap.conf
+
+# Add user accounts
+ARG CONTAINERUSERS
+RUN for u in $CONTAINERUSERS; do if [ $u ]; then adduser -M -c '' $u; fi; done
+
 # Let's Encrypt
 RUN yum install -y certbot
 ADD "image/certbot.cron" "/etc/cron.d/"
