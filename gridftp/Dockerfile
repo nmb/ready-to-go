@@ -26,6 +26,14 @@ EXPOSE 80
 ADD "https://letsencrypt.org/certs/isrgrootx1.pem.txt" "/etc/grid-security/certificates/isrgrootx1.pem"
 RUN ln -s "/etc/grid-security/certificates/isrgrootx1.pem" "/etc/grid-security/certificates/4042bcee.0"
 
+# Add rcauth CA
+ADD "http://rcauth.eu/pilot/g1/ca/cacert.pem" "/etc/grid-security/certificates/rcauth.eu.pem"
+ADD "https://rcauth.eu/pilot/rcauth-pilot-ica-g1.signing_policy" "/etc/grid-security/certificates/rcauth.eu.signing_policy"
+RUN /bin/bash -c 'export HASH=`openssl x509 -in /etc/grid-security/certificates/rcauth.eu.pem -noout -hash`;\
+cd /etc/grid-security/certificates/;\
+ln -s rcauth.eu.pem $HASH.0;\
+ln -s rcauth.eu.signing_policy $HASH.signing_policy'
+
 # Supervisord config file
 ADD "image/supervisord.ini" "/etc/supervisord.ini"
 
