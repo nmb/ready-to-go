@@ -23,7 +23,7 @@ RUN echo $LOCALGRIDMAP >> /etc/localgridmap.conf
 
 # Add user accounts
 ARG CONTAINERUSERS
-RUN for u in $CONTAINERUSERS; do if [ $u ]; then adduser -M -c '' $u; fi; done
+RUN for u in $CONTAINERUSERS; do if [ $u ]; then adduser -m -c '' $u; fi; done
 
 # Let's Encrypt
 RUN yum install -y certbot
