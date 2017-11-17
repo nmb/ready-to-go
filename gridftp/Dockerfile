@@ -21,6 +21,10 @@ ADD "image/edg-mkgridmap.cron" "/etc/cron.d"
 ARG LOCALGRIDMAP
 RUN echo $LOCALGRIDMAP >> /etc/localgridmap.conf
 
+# Set GLOBUS_HOSTNAME to DOMAIN
+ARG DOMAIN
+ENV GLOBUS_HOSTNAME $DOMAIN
+
 # Add user accounts
 ARG CONTAINERUSERS
 RUN for u in $CONTAINERUSERS; do if [ $u ]; then adduser -m -c '' $u; fi; done
