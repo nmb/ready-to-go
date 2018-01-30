@@ -3,12 +3,16 @@ FROM centos:7
 # Required repositories
 RUN yum install -y epel-release
 ADD "http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustanchors.repo" "/etc/yum.repos.d"
+ADD "http://fts-repo.web.cern.ch/fts-repo/fts3-continuous-el7.repo" "/etc/yum.repos.d"
 
 # ROOT CAs
 RUN yum install -y lcg-CA
 
 # RCAuth CA
 RUN yum install -y ca_RCauth-Pilot-ICA-G1
+
+# letsencrypt CA
+RUN yum install -y ca_letsencrypt
 
 # Server software
 RUN yum install -y openssl edg-mkgridmap globus-gridftp-server globus-gridftp-server-progs
@@ -33,13 +37,11 @@ ARG CONTAINERUSERS
 RUN for u in $CONTAINERUSERS; do if [ $u ]; then adduser -m -c '' $u; fi; done
 
 # Let's Encrypt
+RUN if [[ -z ${EMAIL} ]]; then echo "Warning: EMAIL not set - required for obtaining a letsencrypt certificate"; done
 RUN yum install -y certbot
 ADD "image/certbot.cron" "/etc/cron.d/"
 ADD "image/letsencrypt.sh" "/usr/local/bin"
 EXPOSE 80
-
-ADD "https://letsencrypt.org/certs/isrgrootx1.pem.txt" "/etc/grid-security/certificates/isrgrootx1.pem"
-RUN ln -s "/etc/grid-security/certificates/isrgrootx1.pem" "/etc/grid-security/certificates/4042bcee.0"
 
 # Supervisord config file
 ADD "image/supervisord.ini" "/etc/supervisord.ini"
