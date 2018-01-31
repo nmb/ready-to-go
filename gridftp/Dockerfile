@@ -5,8 +5,8 @@ RUN yum install -y epel-release
 ADD "http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustanchors.repo" "/etc/yum.repos.d"
 ADD "http://fts-repo.web.cern.ch/fts-repo/fts3-continuous-el7.repo" "/etc/yum.repos.d"
 
-# ROOT CAs
-RUN yum install -y lcg-CA
+# EGI Trust anchors
+RUN yum install -y ca-policy-egi-core
 
 # RCAuth CA
 RUN yum install -y ca_RCauth-Pilot-ICA-G1
@@ -37,6 +37,7 @@ ARG CONTAINERUSERS
 RUN for u in $CONTAINERUSERS; do if [ $u ]; then adduser -m -c '' $u; fi; done
 
 # Let's Encrypt
+ARG EMAIL
 RUN if [[ -z ${EMAIL} ]]; then echo "Warning: EMAIL not set - required for obtaining a letsencrypt certificate"; fi
 RUN yum install -y certbot
 ADD "image/certbot.cron" "/etc/cron.d/"
