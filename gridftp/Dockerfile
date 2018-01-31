@@ -38,7 +38,7 @@ RUN for u in $CONTAINERUSERS; do if [ $u ]; then adduser -m -c '' $u; fi; done
 
 # Let's Encrypt
 ARG EMAIL
-RUN if [[ -z ${EMAIL} ]]; then echo "Warning: EMAIL not set - required for obtaining a letsencrypt certificate"; fi
+RUN if [[ -z ${EMAIL} ]]; then echo "Warning: EMAIL not set - required for obtaining a letsencrypt certificate"; else echo "Using $EMAIL to obtain host certificate."; fi
 RUN yum install -y certbot
 ADD "image/certbot.cron" "/etc/cron.d/"
 ADD "image/letsencrypt.sh" "/usr/local/bin"
