@@ -8,6 +8,7 @@ services:
             - LOCALGRIDMAP
             - CONTAINERUSERS
             - DOMAIN
+            - EMAIL
         network_mode: "host"
         ports:
             - "0.0.0.0:80:80"
